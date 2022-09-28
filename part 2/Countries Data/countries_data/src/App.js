@@ -35,7 +35,8 @@ function App() {
     setSearch(e.target.value);
     setFiltered(filteredCountries);
   };
-  const handleShow = () => {
+  const handleShow = (e) => {
+    setSearch(e.target.name)
     console.log("happy happy");
     return <div></div>;
   };
@@ -57,14 +58,14 @@ function App() {
                     <li key={lang}>{lang}</li>
                   ))}
                 </ul>
-                <img src={`'${count.flag}'`} alt="flag" />
+                <img src={count.flags.pnggit gi} alt="flag" />
               </div>
             ))}
           </div>
         ) : filtered.length <= 10 ? (
           filtered.map((count) => {
             return (
-              <div key={count.id} id={count.id}>
+              <div key={count.id} id={count.id}name={count.name.common}>
                 <p>{count.name.common}</p>
                 <button onClick={() => handleShow()} id={count.id}>
                   show
