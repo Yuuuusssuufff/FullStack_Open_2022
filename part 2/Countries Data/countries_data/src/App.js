@@ -17,7 +17,7 @@ function App() {
   const [countryData, setCountryData] = useState([]);
   const [search, setSearch] = useState("");
   const [filtered, setFiltered] = useState([]);
- 
+
   useEffect(() => {
     axios.get("https://restcountries.com/v3.1/all").then((res) => {
       setCountryData(res.data);
@@ -36,7 +36,7 @@ function App() {
     setFiltered(filteredCountries);
   };
   const handleShow = (e) => {
-    setSearch(e.target.name)
+    setSearch(e.target.name);
     console.log("happy happy");
     return <div></div>;
   };
@@ -58,14 +58,14 @@ function App() {
                     <li key={lang}>{lang}</li>
                   ))}
                 </ul>
-                <img src={count.flags.pnggit gi} alt="flag" />
+                <img src={count.flags.png} alt="flag" />
               </div>
             ))}
           </div>
         ) : filtered.length <= 10 ? (
           filtered.map((count) => {
             return (
-              <div key={count.id} id={count.id}name={count.name.common}>
+              <div key={count.id} id={count.id} name={count.name.common}>
                 <p>{count.name.common}</p>
                 <button onClick={() => handleShow()} id={count.id}>
                   show

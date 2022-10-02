@@ -6,17 +6,20 @@ import PersonsForm from "./components/PersonsForm";
 import Filter from "./components/Filter";
 
 function App() {
-  const [persons, setPersons] = useState([{ name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }]);
+  const [persons, setPersons] = useState([
+    { name: "Arto Hellas", number: "040-123456", id: 1 },
+    { name: "Ada Lovelace", number: "39-44-5323523", id: 2 },
+    { name: "Dan Abramov", number: "12-43-234345", id: 3 },
+    { name: "Mary Poppendieck", number: "39-23-6423122", id: 4 },
+  ]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchKey, setSearchKey] = useState("");
+  const url = "http://localhost:3000/persons";
 
-useEffect(()=>{
-axios.get('http://localhost:3001/persons').then(res=> setPersons(res.data))
-}, [])
+  useEffect(() => {
+    axios.get(url).then((res) => setPersons(res.data));
+  }, []);
 
   const handleName = (e) => {
     setNewName(e.target.value);
@@ -28,11 +31,15 @@ axios.get('http://localhost:3001/persons').then(res=> setPersons(res.data))
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     const newPerson = {
       name: newName,
       number: newNumber,
       id: persons.length + 1,
     };
+    axios
+      .post(url, newPerson)
+      .then((resp) => console.log(resp.data, "is added"));
     if (
       persons.find(
         (person) => person.name.toLowerCase() === newName.toLowerCase()
@@ -45,9 +52,17 @@ axios.get('http://localhost:3001/persons').then(res=> setPersons(res.data))
     }
   };
 
+  const handleDelete = (e) => {
+    const id = e.target.id;
+    // console.log(id);
+    const url = `http://localhost:3000/persons/${id}`;
+    axios.delete(url).then((resp) => {console.log(resp.data)
+     (setPersons((person, id) => person.id !== id))
+    });
+  };
+
   const handleSearch = (e) => {
     e.preventDefault();
-    
   };
 
   const handleSearchKey = (e) => {
@@ -57,15 +72,25 @@ axios.get('http://localhost:3001/persons').then(res=> setPersons(res.data))
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter handleSearch={handleSearch} searchKey={searchKey} handleSearchKey={handleSearchKey} />
+      <Filter
+        handleSearch={handleSearch}
+        searchKey={searchKey}
+        handleSearchKey={handleSearchKey}
+      />
       <h2>add a new</h2>
-      <PersonsForm handleName={handleName}
-  handleNumber={handleNumber}
-  handleSubmit={handleSubmit}
-  newName={newName}
-  newNumber ={newNumber}/>
+      <PersonsForm
+        handleName={handleName}
+        handleNumber={handleNumber}
+        handleSubmit={handleSubmit}
+        newName={newName}
+        newNumber={newNumber}
+      />
       <h2>Numbers</h2>
-     <Person persons={persons} searchKey = {searchKey}/>
+      <Person
+        persons={persons}
+        searchKey={searchKey}
+        handleDelete={handleDelete}
+      />
     </div>
   );
 }
