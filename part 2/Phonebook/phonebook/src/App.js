@@ -15,11 +15,11 @@ function App() {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [searchKey, setSearchKey] = useState("");
-  const url = "http://localhost:3001/persons";
+  const url = "http://localhost:3001/api/persons";
 
   useEffect(() => {
     axios.get(url).then((res) => setPersons(res.data));
-  }, []);
+  }, [persons]);
 
   const handleName = (e) => {
     setNewName(e.target.value);
@@ -55,10 +55,11 @@ function App() {
   const handleDelete = (e) => {
     const id = e.target.id;
     // console.log(id);
-    const url = `http://localhost:3000/persons/${id}`;
-    axios.delete(url).then((resp) => {console.log(resp.data)
-     (setPersons((person, id) => person.id !== id))
+    const url = `http://localhost:3001/api/persons/${id}`;
+    axios.delete(url).then((resp) => {
+      return
     });
+    (setPersons(prev => prev.filter(p => p.id !== id)))
   };
 
   const handleSearch = (e) => {
